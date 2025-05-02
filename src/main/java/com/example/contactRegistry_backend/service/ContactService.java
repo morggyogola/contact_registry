@@ -4,6 +4,7 @@ import com.example.contactRegistry_backend.dto.ContactDto;
 import com.example.contactRegistry_backend.entity.Contact;
 import com.example.contactRegistry_backend.exception.ContactCreationException;
 import com.example.contactRegistry_backend.repository.ContactRepository;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -50,6 +51,16 @@ public class ContactService {
 
     public List<Contact> getAllContacts() {
         return contactRepository.findAll();
+    }
+
+    public Contact getContactById(Long id) {
+        return contactRepository.findById(id).orElseThrow(() -> new ContactCreationException("Contact not found with id: " + id));
+    }
+
+    public Contact updateContact(Long id, @Valid ContactDto contact) {
+        Contact existingContact = contactRepository.findById(id).orElseThrow(() -> new ContactCreationException("Contact not found with id: " + id));
+        BeanUtils.copyProperties(contact, existingContact, "id");
+        return contactRepository.save(existingContact);
     }
 
 

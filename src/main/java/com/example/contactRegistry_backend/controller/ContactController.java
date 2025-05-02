@@ -37,4 +37,26 @@ public class ContactController {
         }
     }
 
+    @GetMapping("/getContactById/{id}")
+    public ResponseEntity<?> getContactById(@PathVariable Long id) {
+        try {
+            Contact contact = contactService.getContactById(id);
+            return new ResponseEntity<>(contact, HttpStatus.OK);
+        } catch (ContactCreationException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/updateContact/{id}")
+    public ResponseEntity<?> updateContact(@PathVariable Long id, @Valid @RequestBody ContactDto contact) {
+        try {
+            Contact updatedContact = contactService.updateContact(id, contact);
+            return new ResponseEntity<>(updatedContact, HttpStatus.OK);
+        } catch (ContactCreationException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
+
+
+
 }
