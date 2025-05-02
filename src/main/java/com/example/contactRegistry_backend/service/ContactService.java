@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ContactService {
 
@@ -44,6 +46,10 @@ public class ContactService {
             throw new ContactCreationException("Failed to create contact");
         }
 
+    }
+
+    public List<Contact> getAllContacts() {
+        return contactRepository.findAll();
     }
 
 
